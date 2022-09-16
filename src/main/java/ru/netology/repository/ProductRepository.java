@@ -16,6 +16,9 @@ public class ProductRepository {
         products = tmp; // заполняем новый массив в качестве основного
     }
     public void removeById (int id) {
+        if (findById(id) == null) { // если товара с таким id нет, то --
+            throw new NotFoundException("Нет товара с таким id для удаления: " + id); // создаём такое исключение
+        }
         Product[] tmp = new Product[products.length - 1];
         int index = 0;
         for (Product product : products) {
@@ -26,8 +29,16 @@ public class ProductRepository {
         }
         products = tmp;
     }
-
+    public Product findById(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) { // если id товара совпадает с искомым
+                return product; // то возвращаем его
+            }
+        }
+        return null;
+    }
     public Product[] getProducts() {
         return products;
     }
+
 }
